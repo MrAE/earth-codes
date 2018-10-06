@@ -1,0 +1,71 @@
+---
+title: "w3w sandbox"
+author: "Jesse Leigh Patsolic"
+output: 
+  html_document:
+    keep_md: true
+---
+
+<!--
+### ### INITIAL COMMENTS HERE ###
+###
+### Jesse Leigh Patsolic 
+### 2018 <Jesse.L.Patsolic@alumni.wfu.edu>
+### S.D.G 
+#
+-->
+
+```{r render, eval=FALSE, echo=FALSE}
+require(rmarkdown)
+rmarkdown::render("Blank.Rmd")
+system('open Blank.html')
+```
+
+<style type="text/css">
+.table {
+    width: 40%;
+}
+tr:hover {background-color:#f5f5f5;}
+</style>
+
+
+## Data Preparation 
+
+The data have been imported and set up in .... 
+
+```{r cc1}
+require(threewords)
+f <- file('w3w.conf', 'r')
+jkey <- readLines(f)
+close(f)
+```
+
+
+```{r}
+tmp <- from_words(key, 'coffee')
+from_words(key = jkey, words = c('index', 'home', ''))
+
+from_position(key = jkey, positions = c(6.385336,-36.293769), lang = 'fr')
+
+
+tmp <- httr::GET(url = paste0('https://api.what3words.com/v2/autosuggest?addr=plan.clips.a&focus=51.4243877,-0.3474524&clip=bbox(54,2,50,-4)&lang=en&key=', jkey))
+
+
+tmp <- httr::GET(url = paste0("https://api.what3words.com/v2/standardblend?addr=plan.clips.above&lang=en&focus=51.4243877,-0.3474524&format=json&key=", jkey))
+
+
+
+```
+
+
+
+
+
+
+<!--
+#   Time:
+##  Working status:
+### Comments:
+####Soli Deo Gloria
+--> 
+
