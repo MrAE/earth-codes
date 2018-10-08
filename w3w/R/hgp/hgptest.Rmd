@@ -1,0 +1,124 @@
+---
+title: "w3w sandbox"
+author: "Jesse L. and Heather G. Patsolic"
+output: 
+  html_document:
+    keep_md: true
+---
+
+<!--
+### ### INITIAL COMMENTS HERE ###
+###
+### Jesse Leigh Patsolic 
+### 2018 <Jesse.L.Patsolic@alumni.wfu.edu>
+### S.D.G 
+#
+-->
+
+```{r render, eval=FALSE, echo=FALSE}
+require(rmarkdown)
+rmarkdown::render("Blank.Rmd")
+system('open Blank.html')
+```
+
+<style type="text/css">
+.table {
+    width: 40%;
+}
+tr:hover {background-color:#f5f5f5;}
+</style>
+
+## What 3 Words
+
+[what3words](https://map.what3words.com/kicked.tennis.clever?utm_campaign=B2C_4561_W3_Pt_Core%252BApp_BothOs_Org_WO_en_Main%252BSite%252BCarousel&utm_medium=dynamic_link&utm_source=w3w)
+
+The idea of **what 3 words** has many interesting applications and one
+of the first ideas that comes to mind is package delivery. Amazon could,
+in theory, request the 3-word coordinate for where someone would like
+their package delivered and send a drone directly to that location.
+However, we know that sending information is not always correct. 
+The website advertises that similar triples of words are far away from
+each other geographically, and I began to wonder if this were true and
+where packages could end up if there were minor deviations in the names.
+In particular, which locations have triples of words that are similar to
+each other.
+
+## Idea
+
+So, I set out to sample (not so randomly) roughly 100 triples of words,
+obtaining 100 data points which would form the vertices of a graph.
+I then placed an edge between any pair of vertices, $i$ and $j$, that
+had a word in common (set-wise).
+[](that was given by the Hamming Distance between the two vertices.)
+In the API, you can search for partial words, but at least one letter
+for each of the three words must be specified, and only three locations
+are given for each querry.
+[](In order to pull sets of words that would have low Hamming Distance, 
+I chose words, such as "farmer, sharp, bliss, radar, coffee" etc)
+In order to ensure the graph had edges, I thought of some words and
+searched for (word,letter,letter) for many words. 
+
+<!--
+**Definition:** In information theory, the **Hamming Distance** between
+two strings of equal length is the number of positions at which the
+corresponding symbols are different. See [Hamming Distance
+WikiPage](https://en.wikipedia.org/wiki/Hamming_distance) for more
+information.
+-->
+
+## Data Preparation 
+
+Since I am more fluent in R, I first attempted to retrieve data from
+w3w's API using their "threewords" package in R. However, this ended up
+being severely limited. Instead I wound up using Python to download
+3-word locations along with with long/lat coordinates using the w3w API. 
+
+### In order to use the API with R: 
+
+```{r cc1}
+require(threewords)
+f <- file('w3w.conf', 'r')
+jkey <- readLines(f)
+close(f)
+```
+
+
+```{r}
+tmp <- from_words(key, 'coffee')
+from_words(key = jkey, words = c('index', 'home', ''))
+
+from_position(key = jkey, positions = c(6.385336,-36.293769), lang = 'fr')
+
+
+tmp <- httr::GET(url = paste0('https://api.what3words.com/v2/autosuggest?addr=plan.clips.a&focus=51.4243877,-0.3474524&clip=bbox(54,2,50,-4)&lang=en&key=', jkey))
+
+
+tmp <- httr::GET(url = paste0("https://api.what3words.com/v2/standardblend?addr=plan.clips.above&lang=en&focus=51.4243877,-0.3474524&format=json&key=", jkey))
+
+```
+
+### In order to use the API with Python: 
+
+Insert stuff here!!!
+
+## Using Data From w3w API from Python
+
+The data have been imported and set up using Python
+
+```{r json}
+f <- file('store_dat.json', 'r')
+h <- rjson::fromJSON(file = f)
+close(f)
+load(dat.RData)
+```
+
+
+
+
+<!--
+#   Time:
+##  Working status:
+### Comments:
+####Soli Deo Gloria
+--> 
+

@@ -1,0 +1,157 @@
+---
+title: "w3w graph"
+author: "Jesse Leigh Patsolic"
+output: 
+  html_document:
+    keep_md: true
+---
+
+<!--
+### ### INITIAL COMMENTS HERE ###
+###
+### Jesse Leigh Patsolic 
+### 2018 <Jesse.L.Patsolic@alumni.wfu.edu>
+### S.D.G 
+#
+-->
+
+```{r render, eval=FALSE, echo=FALSE}
+require(rmarkdown)
+require(threewords)
+require(data.table)
+require(igraph)
+rmarkdown::render("Blank.Rmd")
+system('open Blank.html')
+```
+
+<style type="text/css">
+.table {
+    width: 40%;
+}
+tr:hover {background-color:#f5f5f5;}
+</style>
+
+
+## Data Preparation 
+
+The data have been imported and set up in .... 
+
+```{r cc1}
+f <- file('../../Python/store_data.json', 'r')
+store <- rjson::fromJSON(file = f)
+close(f)
+```
+
+
+```{r}
+words <- 
+  Reduce(c,
+  lapply(store, function(tmp) {
+      Reduce(c, 
+        lapply(tmp[[2]], function(x) {
+               t1 <- 
+                 x$words
+               }
+        )
+      )
+  })
+)
+  
+
+ind <- duplicated(words)
+
+dat <- 
+Reduce(rbind, 
+  lapply(store, function(tmp) {
+    Reduce(rbind, 
+      lapply(tmp[[2]], function(x) {
+             
+             t1 <- 
+               rbind(strsplit(x$words, split = '[.]')[[1]])
+      
+             t2 <- 
+               rbind(c(lat = x$geometry$lat, lng = x$geometry$lng))
+      
+             data.table(t1, t2)
+             }
+      )
+    )
+  })
+)
+
+udat <- dat[!ind,]
+uwords <- words[!ind]
+```
+
+
+
+```{r}
+udat
+uwords
+```
+
+```{r edge_creation}
+uset <- unique(c(udat$V1,udat$V2,udat$V3)) #unique elements
+
+wexist <- matrix(NA,length(uset),length(uwords))
+# rows of matrix correspond to single words, columns to data points
+for(i in 1:length(uset)){
+    wexist[i,] <- grepl(uset[i],uwords)
+}
+
+# create adj mat
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+#   Time:
+##  Working status:
+### Comments:
+####Soli Deo Gloria
+--> 
+
