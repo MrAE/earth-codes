@@ -21,14 +21,12 @@ abc = list(string.ascii_lowercase)
 wordList = wl
 shuffle(wordList)
 
-wordList.index("coffee")
-
-w3w = what3words.Geocoder(api_key)
-res = w3w.reverse(lat=51.484464, lng=-0.195405)
-
-res = w3w.forward('yarn.tigers.verbs')
-res = w3w.standardblend("coffee.a.a")
-res = w3w.standardblend("coffee.*.*")
+#w3w = what3words.Geocoder(api_key)
+#res = w3w.reverse(lat=51.484464, lng=-0.195405)
+#
+#res = w3w.forward('yarn.tigers.verbs')
+#res = w3w.standardblend("coffee.a.a")
+#res = w3w.standardblend("coffee.*.*")
 
 
 aa = wordList.index("coffee")
@@ -36,39 +34,125 @@ ab = wordList.index("hop")
 ac = wordList.index("blue")
 ad = wordList.index("brain")
 
+ae = wordList.index("farmer")
+af = wordList.index("shark")
+ag = wordList.index("bliss")
+ah = wordList.index("radar")
+
 
 t1 = [wordList[aa] + '.' + wordList[aa] + '.' + i for i in abc]
 t2 = [wordList[aa] + '.' + wordList[ab] + '.' + i for i in abc]
 t3 = [wordList[aa] + '.' + wordList[ac] + '.' + i for i in abc]
 t4 = [wordList[aa] + '.' + wordList[ad] + '.' + i for i in abc]
 
-res = w3w.standardblend(tmp)
+t5 = [wordList[ad] + '.' + wordList[ad] + '.' + i for i in abc]
+t6 = [wordList[ad] + '.' + wordList[ac] + '.' + i for i in abc]
+
+t7 = ['farmer' + '.' + 'coffee' + '.' + i for i in abc]
+t8 = ['farmer' + '.' + 'brain' + '.' + i for i in abc]
+t9 = ['shark' + '.' + 'radar' + '.' + i for i in abc]
+t10 = ['shark' + '.' + 'coffee' + '.' + i for i in abc]
+
+t11 = ['whale' + '.' + 'shark' + '.' + i for i in abc]
+t12 = ['fish' + '.' + 'shar' + '.' + i for i in abc]
+t13 = ['fish' + '.' + 'rad' + '.' + i for i in abc]
+
+t14 = ['neon' + '.' + 'shark' + '.' + i for i in abc]
+t15 = ['shark' + '.' + 'bait' + '.' + i for i in abc]
+t16 = ['moon' + '.' + 'space' + '.' + i for i in abc]
 
 store = []
 
 for i in t1:
     res = w3w.standardblend(i)
     store.append(res)
-    time.sleep(5)
-
-with open("store_data.pkl", 'wb') as output:
-    pickle.dump(store, output, pickle.HIGHEST_PROTOCOL)
+    time.sleep(3)
 
 for i in t2:
     res = w3w.standardblend(i)
     store.append(res)
-    time.sleep(5)
+    time.sleep(3)
+
+for i in t3:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t4:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t5:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t6:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t7:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t8:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t9:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t10:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t11:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t12:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+    
+for i in t13:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t14:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+for i in t15:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+    
+for i in t16:
+    res = w3w.standardblend(i)
+    store.append(res)
+    time.sleep(3)
+
+print('t16 is done')
 
 
+with open("store_data.pkl", 'wb') as output:
+    pickle.dump(store, output, pickle.HIGHEST_PROTOCOL)
 
-ustore = list(set([ri['blends'][0]['words'] for ri in store]))
-tmp = {i: ustore[i] for i in range(len(ustore))} 
 
-
+tmp = {i: store[i] for i in range(len(store))} 
 with open('store_data.json', 'w') as output:
-    json.dump(ustore, output)
-
-
+    json.dump(tmp, output)
 
 
 
