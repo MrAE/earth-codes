@@ -61,6 +61,13 @@ t14 = ['neon' + '.' + 'shark' + '.' + i for i in abc]
 t15 = ['shark' + '.' + 'bait' + '.' + i for i in abc]
 t16 = ['moon' + '.' + 'space' + '.' + i for i in abc]
 
+t17 = ['gold' + '.' + 'shark' + '.' + i for i in abc]
+t18 = ['amp' + '.' + 'gold' + '.' + i for i in abc]
+t19 = ['moon' + '.' + 'pi' + '.' + i for i in abc]
+
+t20 = ['truck' + '.' + 'shark' + '.' + i for i in abc]
+t21 = [i + '.' + 'truck' + '.' + 'shark' for i in abc]
+
 store = []
 
 for i in t1:
@@ -129,21 +136,44 @@ for i in t13:
     time.sleep(3)
 
 for i in t14:
-    res = w3w.standardblend(i)
-    store.append(res)
+    res14 = w3w.standardblend(i)
+    store.append(res14)
     time.sleep(3)
 
 for i in t15:
-    res = w3w.standardblend(i)
-    store.append(res)
+    res15 = w3w.standardblend(i)
+    store.append(res15)
     time.sleep(3)
     
 for i in t16:
-    res = w3w.standardblend(i)
-    store.append(res)
-    time.sleep(3)
+    res16 = w3w.standardblend(i)
+    store.append(res16)
+    time.sleep(2)
 
-print('t16 is done')
+for i in t17:
+    res17 = w3w.standardblend(i)
+    store.append(res17)
+    time.sleep(2)
+
+for i in t18:
+    res18 = w3w.standardblend(i)
+    store.append(res18)
+    time.sleep(2)
+    
+for i in t19:
+    res19 = w3w.standardblend(i)
+    store.append(res19)
+    time.sleep(2)
+
+for i in t20:
+    res20 = w3w.standardblend(i)
+    store.append(res20)
+    time.sleep(2)
+
+for i in t21:
+    res21 = w3w.standardblend(i)
+    store.append(res21)
+    time.sleep(2)
 
 
 with open("store_data.pkl", 'wb') as output:

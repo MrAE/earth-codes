@@ -2,6 +2,8 @@
 title: "w3w graph"
 author: "Jesse Leigh Patsolic"
 output: 
+  slidy_presentation:
+    font_adjustment: -1
   html_document:
     keep_md: true
 ---
@@ -20,8 +22,11 @@ require(rmarkdown)
 require(threewords)
 require(data.table)
 require(igraph)
-rmarkdown::render("Blank.Rmd")
-system('open Blank.html')
+library("ggmap")
+library(maptools)
+library(maps)
+rmarkdown::render("graph.Rmd", output_format = 'slidy_presentation')
+system('open graph.html')
 ```
 
 <style type="text/css">
@@ -32,9 +37,23 @@ tr:hover {background-color:#f5f5f5;}
 </style>
 
 
-## Data Preparation 
+# What is what3words?
 
-The data have been imported and set up in .... 
+A unique three word address for every 3m X 3m square on earth.
+
+## Users
+
+- The Red Cross
+- Mercedes-Benz (for in-car voice nav.)
+
+## example
+
+[ClarkHall_w3w](https://map.what3words.com/kicked.tennis.clever?utm_campaign=B2C_4561_W3_Pt_Core%252BApp_BothOs_Org_WO_en_Main%252BSite%252BCarousel&utm_medium=dynamic_link&utm_source=w3w)
+
+# Data Preparation 
+
+I used the w3w API to download and store addresses with their location
+to a JSON file. I then load it into R.
 
 ```{r cc1}
 f <- file('../Python/store_data.json', 'r')
@@ -42,6 +61,7 @@ store <- rjson::fromJSON(file = f)
 close(f)
 ```
 
+# Get each three word address 
 
 ```{r}
 words <- 
@@ -56,10 +76,14 @@ words <-
       )
   })
 )
-  
-
 ind <- duplicated(words)
+uwords <- words[!ind]
+```
 
+
+# Extract three words and lon/lat into data.frame
+
+```{r}
 dat <- 
 Reduce(rbind, 
   lapply(store, function(tmp) {
@@ -78,60 +102,79 @@ Reduce(rbind,
     )
   })
 )
-
 udat <- dat[!ind,]
 ```
 
-
+# instantiate adjacency matrix
 
 ```{r}
-udat
+n <- nrow(udat)
+A <- matrix(0, n,n)
+sord <- order(udat$lng, udat$lat)
+```
+
+# flip edges on 
+
+```{r}
+uset <- unique(c(udat[[1]], udat[[2]], udat[[3]]))
+ulist <- lapply(uset, function(u) grepl(u, uwords))
+
+for (ul in ulist) {
+  for (i in 1:n) {
+    for (j in 1:n) {
+      if (i != j & ul[i] & ul[j]) { 
+        A[i,j] <- 1
+      }
+    }
+  }
+}
+#plot(raster(A[sord, sord]), col = c('white', 'green'))
+#image(A[sord, sord])
+image(A, col = c('white', 'darkgreen'))
+```
+
+# create graph
+
+```{r}
+g1 <- igraph::graph_from_adjacency_matrix(A, mode = 'undirected')
+lo <- layout.norm(as.matrix(udat[, c(5,4)]))
 ```
 
 
+# map edges for easy plotting in ggplot
+
+```{r}
+edgelist <- get.edgelist(g1)
+edges <- data.frame(udat[edgelist[,1], c(5,4)], udat[edgelist[,2], c(5,4)])
+colnames(edges) <- c("X1","Y1","X2","Y2")
+```
+
+# build ggplot
+
+```{r, fig.width = 12, fig.height = 8, fig.retina = 2}
+#Using GGPLOT, plot the Base World Map
+mp <- NULL
+mapWorld <- borders("world", colour="gray35", fill="gray50", 
+                    ylim = range(udat$lat) + c(-1,1))
+mp <- ggplot() + mapWorld
+mp <- mp + geom_segment(aes(x = X1, y = Y1, xend = X2, yend = Y2), 
+             data = edges, size = 0.5, colour = 'gray75', alpha = 0.025) +
+           geom_point(aes(x=udat$lng, y=udat$lat) ,color="red", cex=0.05)
+```
+
+# The Map
+
+```{r, echo = FALSE, fig.width = 14, fig.heigth = 10}
+print(mp)
+```
 
 
+# table of words
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+tab <- table(c(udat[[1]], udat[[2]], udat[[3]]))
+tab
+```
 
 
 <!--
